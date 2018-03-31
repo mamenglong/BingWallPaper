@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/nav_update"
+            android:icon="@drawable/nav_update"
+            android:title="Update" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/nav_gallery"
+            android:title="Gallery" />
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/nav_location"
+            android:title="Location" />
+        <item
+            android:id="@+id/nav_mail"
+            android:icon="@drawable/nav_mail"
+            android:title="Mail" />
+        <item
+            android:id="@+id/nav_task"
+            android:icon="@drawable/nav_task"
+            android:title="Tasks" />
+        <item android:title="@string/donate"
+            android:id="@+id/nav_donate"
+            android:icon="@drawable/nav_donate"/>
+    </group>
+    <item android:title="关于">
+        <menu>
+            <item android:icon="@drawable/nav_qq"
+                android:id="@+id/contactMe"
+                android:title="QQ"/>
+            <item android:id="@+id/about"
+                android:icon="@drawable/nav_about"
+                android:title="@string/about"/>
+        </menu>
+    </item>
+
+</menu>
