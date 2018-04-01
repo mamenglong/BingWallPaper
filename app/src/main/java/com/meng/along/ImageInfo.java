@@ -1,11 +1,14 @@
 package com.meng.along;
 
+import java.io.Serializable;
+
 /**
  * Created by Long on 2018/3/20.
  * 图片信息
  */
 
-public class ImageInfo {
+public class ImageInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String url;
     private String copyright;
     private String startdate;

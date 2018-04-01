@@ -1,5 +1,6 @@
 package com.meng.along.common;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,13 +8,18 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.meng.along.ImageActivity;
 import com.meng.along.ImageInfo;
+import com.meng.along.ImageText;
 import com.meng.along.MyApplication;
 import com.meng.along.R;
 
@@ -21,6 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +37,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Long on 2018/3/23.
@@ -176,6 +187,64 @@ public class Common {
         return arrayList;
     }
 
+    /**
+     * 下载图片
+     */
+    public static int downloadImage(ImageInfo imageInfo) {
+        //  Environment.getDataDirectory();// /data
+        // Environment.getRootDirectory();// /system
+        // Environment.getExternalStorageDirectory();// /storage/emulated/0
+        //  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);// /storage/emulated/0/DCIM
+        int result=0;
+        String phonePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "BingPic";
+        File file = new File(phonePath);
+        if (!file.exists())
+            file.mkdirs();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        String date=sdf.format(new java.util.Date());
+        String imageName =imageInfo.getFilename();//"Bing"+ date+".jpg" ;
+        String filepath = phonePath + File.separator + imageName;
+        if (new File(filepath).exists())
+            return 1;
+        URL httpUrl = null;
+        try {
+            httpUrl = new URL(imageInfo.getUrl());
+            DataInputStream dataInputStream = new DataInputStream(httpUrl.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(phonePath, File.separator + imageName));
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = dataInputStream.read(buffer)) > 0) {
+                fileOutputStream.write(buffer, 0, length);
+            }
+            dataInputStream.close();
+            fileOutputStream.close();
+        } catch (MalformedURLException e) {
+            result=2;
+            e.printStackTrace();
+        } catch (IOException ie) {
+            result=2;
+            ie.printStackTrace();
+        }
+        return result;
+    }
+    //动态获取内存存储权限
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
 
-
+        /**
+         * 动态获取权限，Android 6.0 新特性，一些保护权限，除了要在AndroidManifest中声明权限，还要使用如下代码动态获取
+         */
+        if (Build.VERSION.SDK_INT >= 23) {
+            int REQUEST_CODE_CONTACT = 101;
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            //验证是否许可权限
+            for (String str : permissions) {
+                if (activity.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                    //申请权限
+                    activity.requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                    return;
+                }
+            }
+        }
+    }
 }

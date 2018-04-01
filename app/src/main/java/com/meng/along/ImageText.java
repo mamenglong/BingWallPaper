@@ -1,19 +1,22 @@
 package com.meng.along;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Created by Long on 2018/3/22.
  */
 
-public class ImageText {
+public class ImageText implements Serializable{
     private String text;
     private int imageId;
     private String imageUrl;
     private File file;
-
+    private static final long serialVersionUID = 1L;
     @Override
     public int hashCode() {
+        if(imageUrl==null)
+            return 0;
         return  imageUrl.length();
     }
 

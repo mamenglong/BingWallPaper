@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layoutAnimation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animation="@anim/item_animation_from_right"
+    android:delay="10%"
+    android:animationOrder="normal"
+    />
+
+<!--这里要注意的是android:fromXDelta="100%p"中的p 不是笔误。当添加了p之后百分比就是基于parent的，所以这里其实代表向右移动parent的整个宽度。-->

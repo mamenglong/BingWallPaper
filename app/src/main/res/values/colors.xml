@@ -6,4 +6,6 @@
     <color name="versionColor">#303F9F</color>
     <color name="tipsColor">#f40505</color>
     <color name="white">#fdfbfb</color>
+    <color name="black" >#000000 </color>
+    <color name="bg_button">#0000</color>
 </resources>

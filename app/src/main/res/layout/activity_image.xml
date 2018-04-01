@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="4dp">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_dark"
+        >
+        <ImageButton
+            android:id="@+id/back"
+            android:src="@drawable/nav_back"
+            android:background="@color/bg_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_below="@id/image"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/nowPosition"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="111111" />
+                <TextView
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/" />
+                <TextView
+                    android:id="@+id/allNum"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="60" />
+
+            </LinearLayout>
+
+
+
+        <ImageButton
+            android:src="@drawable/ic_delete"
+            android:background="@color/bg_button"
+            android:id="@+id/click"
+            android:paddingBottom="20dp"
+            android:layout_gravity="bottom|center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--<ImageButton-->
+        <!--android:layout_gravity="bottom|center"-->
+        <!--android:src="@drawable/nav_download"-->
+        <!--android:id="@+id/download"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+    </FrameLayout>
+</android.support.v7.widget.CardView>
