@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_back"
+        android:background="@color/bg_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!-- 切换卡 -->
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/back"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/viewPager">
+
+    </android.support.v4.view.ViewPager>
+    <TextView
+        android:id="@+id/index"
+        android:gravity="center_horizontal"
+        android:text="000"
+        android:textColor="@color/white"
+        android:layout_above="@id/viewGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <!-- 点点 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:id="@+id/viewGroup"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="100dp">
+    </LinearLayout>
+
+    <ImageButton
+        android:src="@drawable/ic_delete"
+        android:background="@color/bg_button"
+        android:id="@+id/click"
+        android:paddingBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

@@ -13,7 +13,7 @@
         >
         <ImageButton
             android:id="@+id/back"
-            android:src="@drawable/nav_back"
+            android:src="@drawable/ic_back"
             android:background="@color/bg_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -34,18 +34,18 @@
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="111111" />
+                    android:text="" />
                 <TextView
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/" />
+                    android:text="" />
                 <TextView
                     android:id="@+id/allNum"
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="60" />
+                    android:text="" />
 
             </LinearLayout>
 

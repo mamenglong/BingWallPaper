@@ -29,6 +29,7 @@ import com.meng.along.adapter.CardImageAdapter1;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -193,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
                         navItemId=R.id.nav_mail;
                         Toast.makeText(MainActivity.this,"nav_mail",Toast.LENGTH_SHORT)
                                 .show();
+//                        Intent intent=new Intent(MainActivity.this,ViewPager_Activity.class);
+//                        startActivity(intent);
                         break;
                     case R.id.nav_task:
                         Toast.makeText(MainActivity.this,"nav_task",Toast.LENGTH_SHORT)
@@ -242,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(View view, int position) {
                                 List<ImageText> list=new ArrayList<>(imageTextList);
 //                                ImageText imageText = (ImageText)list.get(position);
-                                Intent intent = new Intent(MainActivity.this, ImageActivity.class);
+                                Intent intent = new Intent(MainActivity.this, ViewPager_Activity.class);
                                 Bundle bundle=new Bundle();
                                 bundle.putSerializable("list",(Serializable) targetImageInfo);
                                 bundle.putInt("position",position);
@@ -284,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
                 String localPath = Environment.getExternalStorageDirectory().getPath() + File.separator + "BingPic";
                 File file=new File(localPath);
                 imageTextListG.clear();
+
                 if (!file.exists())
                     file.mkdirs();
                 if(file.listFiles()!=null)
@@ -292,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                         ImageText imageText=new ImageText();
                         imageText.setFile(file.listFiles()[i]);
                         imageText.setImageUrl(file.listFiles()[i].getAbsolutePath());
-                        imageText.setText("");
+                        imageText.setText(file.listFiles()[i].getName());
                         imageTextListG.add(imageText);
                     }
                 runOnUiThread(new Runnable() {
@@ -306,7 +310,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(View view, int position) {
                                 List<ImageText> list=new ArrayList<>(imageTextListG);
 //                                ImageText imageText = (ImageText)list.get(position);
-                                Intent intent = new Intent(MainActivity.this, ImageActivity.class);
+//                                Intent intent = new Intent(MainActivity.this, ImageActivity.class);
+                                Intent intent = new Intent(MainActivity.this, ViewPager_Activity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("list", (Serializable) list);
                                 bundle.putInt("position",position);
