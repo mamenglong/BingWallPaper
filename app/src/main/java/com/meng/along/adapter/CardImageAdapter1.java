@@ -15,7 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.meng.along.ImageActivity;
 import com.meng.along.ImageText;
-import com.meng.along.MyApplication;
+import com.meng.along.common.MyApplication;
 import com.meng.along.R;
 
 import java.util.List;

@@ -1,6 +1,8 @@
 package com.meng.along;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -8,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.meng.along.common.Common;
+import com.meng.along.common.MyApplication;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +40,6 @@ public class ViewPager_Activity extends AppCompatActivity {
     private PagerAdapter adapter;
     private List<View> viewPages = new ArrayList<>();
     private List<ImageText> listPath=new ArrayList<>();
-    private List<ImageInfo> listInfo;
     //包裹点点的LinearLayout
     private ViewGroup group;
     private ImageView imageView;
@@ -53,18 +57,8 @@ public class ViewPager_Activity extends AppCompatActivity {
         Bundle bundle=intent.getBundleExtra("bundle");
         position=bundle.getInt("position",0);
         choice=bundle.getString("choice");
-        if(choice.equals("gallery"))
-            listPath=(List<ImageText>)bundle.getSerializable("list");
-        else {
-            listInfo = (List<ImageInfo>) bundle.getSerializable("list");
-            for (ImageInfo i : listInfo
-                    ) {
-                ImageText imageText = new ImageText();
-                imageText.setImageUrl(i.getUrl());
-                imageText.setText(i.getFilename());
-                listPath.add(imageText);
-            }
-        }
+
+        listPath=(List<ImageText>)bundle.getSerializable("list");
         initView();
         initViewPages(listPath.size());
         initPointer();
@@ -115,9 +109,17 @@ public class ViewPager_Activity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         for (int i=0;i<size;i++){
             View activity_image = inflater.inflate(R.layout.layout_viewpager_image, null);
-            final ImageView image;
-            image=activity_image.findViewById(R.id.image);
-            bingGlide(listPath.get(i).getImageUrl(),image);
+            final PhotoView photoView;
+            photoView=activity_image.findViewById(R.id.image);
+            // 启用图片缩放功能
+            photoView.enable();
+            // 获取/设置 动画持续时间
+//            photoView.setAnimaDuring(20);
+            // int d = photoView.getAnimaDuring();
+            // 获取/设置 最大缩放倍数
+            photoView.setMaxScale(2);
+            // float maxScale = photoView.getMaxScale();
+            bingGlide(listPath.get(i).getImageUrl(),photoView);
             //添加到集合中
             viewPages.add(activity_image);
         }
@@ -141,24 +143,41 @@ public class ViewPager_Activity extends AppCompatActivity {
             clickButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    File file=new File(listPath.get(position).getImageUrl());
-                    if(file.delete()) {
-                        listPath.remove(position);
-                        // int position = viewPager.getCurrentItem();//获取当前页面位置
-                        viewPages.remove(position);//删除一项数据源中的数据
-                        adapter.notifyDataSetChanged();//通知UI更新
-                        if (position<=0&&listPath.size()==0){
-                            //右往左靠
-                            finish();
-                            return;
-                        }
-                        if(position>(listPath.size()-1))
-                            position--;
-                        initPointer();
-                        viewPager.setCurrentItem(position);
-                        index.setText(viewPager.getCurrentItem()+1+"/"+listPath.size());
-                        return;
-                    }
+                    new  AlertDialog.Builder(ViewPager_Activity.this)
+                            .setTitle("删除提示")
+                            .setMessage("是否删除"+listPath.get(position).getFileName()+"?")
+                            .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    File file=new File(listPath.get(position).getImageUrl());
+                                    if(file.delete()) {
+                                        listPath.remove(position);
+                                        // int position = viewPager.getCurrentItem();//获取当前页面位置
+                                        viewPages.remove(position);//删除一项数据源中的数据
+                                        adapter.notifyDataSetChanged();//通知UI更新
+                                        if (position<=0&&listPath.size()==0){
+                                            //右往左靠
+                                            finish();
+                                            return;
+                                        }
+                                        if(position>(listPath.size()-1))
+                                            position--;
+                                        initPointer();
+                                        viewPager.setCurrentItem(position);
+                                        index.setText(viewPager.getCurrentItem()+1+"/"+listPath.size());
+                                        return;
+                                    }
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setCancelable(false)
+                            .show();
+
                 }
             });
         }
@@ -196,9 +215,8 @@ public class ViewPager_Activity extends AppCompatActivity {
             imageView.setPadding(20, 0, 20, 0);
             imageViews[i] = imageView;
             //初始化第一个page页面的图片的原点为选中状态
-            if (i == 0) {
+            if (i == position) {
                 //表示当前图片
-
                 imageViews[i].setBackgroundResource(R.drawable.page_indicator_focused);
                 /**
                  * 在java代码中动态生成ImageView的时候
@@ -212,7 +230,7 @@ public class ViewPager_Activity extends AppCompatActivity {
         }
     }
     //绑定imageview控件
-    public void bingGlide(String url ,ImageView imageView){
+    public void bingGlide(String url ,PhotoView photoView){
         int tag=new Random(System.currentTimeMillis()).nextInt( 4)+1;
         int pl= MyApplication.getResId("loading"+tag,R.drawable.class);
         if(pl==1)
@@ -227,10 +245,10 @@ public class ViewPager_Activity extends AppCompatActivity {
                 .load(url)
                 .transition(withCrossFade())//带淡入淡出效果
                 .apply(options)
-                .into(imageView);
+                .into(photoView);
     }
 
-    public void download(){
+    public  void download(){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -240,7 +258,7 @@ public class ViewPager_Activity extends AppCompatActivity {
                         Toast.makeText(ViewPager_Activity.this,"开始下载第"+(position+1)+"个...！",Toast.LENGTH_SHORT).show();
                     }
                 });
-                final int code= Common.downloadImage(listInfo.get(position));
+                final int code= Common.downloadImage(listPath.get(position));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -281,7 +299,8 @@ public class ViewPager_Activity extends AppCompatActivity {
                 break;
         }
     }
-    //ViewPager的onPageChangeListener监听事件，当ViewPager的page页发生变化的时候调用
+//ViewPager的onPageChangeListener监听事件，当ViewPager的page页发生变化的时候调用
+
     public class GuidePageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

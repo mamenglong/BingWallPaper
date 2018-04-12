@@ -10,18 +10,20 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.meng.along.ImageActivity;
+import com.allenliu.versionchecklib.v2.AllenVersionChecker;
+import com.allenliu.versionchecklib.v2.builder.DownloadBuilder;
+import com.allenliu.versionchecklib.v2.builder.UIData;
 import com.meng.along.ImageInfo;
 import com.meng.along.ImageText;
-import com.meng.along.MyApplication;
 import com.meng.along.R;
+import com.meng.along.update.MyCheckVersionLib;
+import com.xiaoluo.updatelib.UpdateManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,7 +41,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Long on 2018/3/23.
@@ -69,7 +70,7 @@ public class Common {
      * @param activity
      * **/
     public static void openALiPay(Activity activity){
-         String url1="intent://platformapi/startapp?saId=10000007&" +
+        String url1="intent://platformapi/startapp?saId=10000007&" +
                 "clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2Fa6x076306bxhk8outhwdr67%3F_s" +
                 "%3Dweb-other&_t=1472443966571#Intent;" +
                 "scheme=alipayqr;package=com.eg.android.AlipayGphone;end";
@@ -107,8 +108,27 @@ public class Common {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"已是最新！(*/ω＼*)",Toast.LENGTH_SHORT).show();
-                //虽然这里的参数是AlertDialog.Builder(Context context)但我们不能使用getApplicationContext()获得的Context,而必须使用Activity.this,因为只有一个Activity才能添加一个窗体。
+                String[] UpdateInfor={"http://192.168.1.167:8006/app-debug.apk","Bing更新","新版本强势来袭，快快更新吧！\n 更多内容请访问"};
+                MyCheckVersionLib.checkUpdate(mContext,UpdateInfor);
+
+//                UpdateManager.getInstance().init(mContext)               // 获取实例并初始化,必要
+//                        .compare(UpdateManager.COMPARE_VERSION_NAME) // 通过版本号或版本名比较,默认版本号
+//
+//                        .downloadUrl("http://192.168.1.167:8006/app-debug.apk")               // 下载地址,必要
+//                        .downloadTitle("下载中")              // 下载标题
+//                        .lastestVerName("3.0")                       // 最新版本名
+//                        .lastestVerCode(2)                           // 最新版本号
+//                        .minVerName("1.0")                           // 最低版本名
+//                        .minVerCode(1)                               // 最低版本号
+//                        .isForce(false)                               // 是否强制更新,true无视版本直接更新
+//                        .update()                                    // 开始更新
+//                        // 设置版本对比回调
+//                        .setListener(new UpdateManager.UpdateListener() {
+//                            @Override
+//                            public void onCheckResult(String result) {
+//                                Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
             }
         });
         dialog.setView(view,0,0,0,0);// 设置边距为0,保证在2.x的版本上运行没问题
@@ -153,7 +173,7 @@ public class Common {
         }
         if (stringBuffer.length() == 0)
             ;
-         //   Toast.makeText(new MainActivity(), "网络连接失败！请检查网络设置或稍后再试！", Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(new MainActivity(), "网络连接失败！请检查网络设置或稍后再试！", Toast.LENGTH_SHORT).show();
 
         return stringBuffer.toString();
     }
@@ -190,7 +210,7 @@ public class Common {
     /**
      * 下载图片
      */
-    public static int downloadImage(ImageInfo imageInfo) {
+    public static int downloadImage(ImageText imageText) {
         //  Environment.getDataDirectory();// /data
         // Environment.getRootDirectory();// /system
         // Environment.getExternalStorageDirectory();// /storage/emulated/0
@@ -202,13 +222,13 @@ public class Common {
             file.mkdirs();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
         String date=sdf.format(new java.util.Date());
-        String imageName =imageInfo.getFilename();//"Bing"+ date+".jpg" ;
+        String imageName =imageText.getFileName();//"Bing"+ date+".jpg" ;
         String filepath = phonePath + File.separator + imageName;
         if (new File(filepath).exists())
             return 1;
         URL httpUrl = null;
         try {
-            httpUrl = new URL(imageInfo.getUrl());
+            httpUrl = new URL(imageText.getImageUrl());
             DataInputStream dataInputStream = new DataInputStream(httpUrl.openStream());
             FileOutputStream fileOutputStream = new FileOutputStream(new File(phonePath, File.separator + imageName));
             byte[] buffer = new byte[1024];

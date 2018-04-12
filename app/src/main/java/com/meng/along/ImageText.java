@@ -12,6 +12,16 @@ public class ImageText implements Serializable{
     private int imageId;
     private String imageUrl;
     private File file;
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     private static final long serialVersionUID = 1L;
     @Override
     public int hashCode() {
@@ -67,8 +77,8 @@ public class ImageText implements Serializable{
         this.imageId = imageId;
     }
 
-    public ImageText(String text, int imageId) {
-        this.text = text;
+    public ImageText(String fileName, int imageId) {
+        this.fileName = fileName;
         this.imageId = imageId;
     }
 

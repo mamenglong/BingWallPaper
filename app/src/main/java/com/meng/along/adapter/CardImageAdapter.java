@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.meng.along.ImageText;
-import com.meng.along.MyApplication;
+import com.meng.along.common.MyApplication;
 import com.meng.along.R;
 
 import java.util.List;
@@ -132,21 +132,23 @@ public class CardImageAdapter extends RecyclerView.Adapter<CardImageAdapter.View
 //                .into(holder.image);
 //        }
     }
-    public void bingGlide(ImageText imageText,final CardImageAdapter.ViewHolder holder){
+    public void bingGlide(ImageText imageText,final ViewHolder holder){
         int tag=new Random(System.currentTimeMillis()).nextInt(4)+1;
         int pl= MyApplication.getResId("loading"+tag,R.drawable.class);
         if(pl==1)
             pl=R.drawable.loading1;
         RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用掉Glide的缓存功能
+              //  .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//禁用掉Glide的缓存功能
                 //  .error(R.drawable.error)
                 // .skipMemoryCache(true)//禁用掉Glide的内存缓存功能
                 .placeholder(pl)
+                .fitCenter()
                 ;//占位
         Glide.with(mContext)
                 .load(imageText.getImageUrl())
                 .transition(withCrossFade())//带淡入淡出效果
                 .apply(options)
+
                 .into(holder.image);
     }
     @Override

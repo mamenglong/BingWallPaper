@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--暂时未用-->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,8 +13,9 @@
         android:background="@android:color/background_dark"
         >
         <ImageButton
+            style="?attr/actionButtonStyle"
             android:id="@+id/back"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/nav_back"
             android:background="@color/bg_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

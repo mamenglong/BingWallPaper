@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--本地图片加载显示容器-->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:src="@drawable/nav_icon"
-
             android:scaleType="centerCrop" />
 
         <TextView

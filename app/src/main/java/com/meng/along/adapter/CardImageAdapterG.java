@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.meng.along.ImageText;
-import com.meng.along.MyApplication;
+import com.meng.along.common.MyApplication;
 import com.meng.along.R;
 
 import java.util.List;
@@ -23,6 +23,7 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 /**
  * Created by Long on 2018/3/22.
+ * 本地图片adapter
  */
 
 public class CardImageAdapterG extends RecyclerView.Adapter<CardImageAdapterG.ViewHolder> implements View.OnClickListener {
@@ -110,7 +111,7 @@ public class CardImageAdapterG extends RecyclerView.Adapter<CardImageAdapterG.Vi
     @Override
     public void onBindViewHolder(  ViewHolder holder, int position) {
         ImageText imageText = imageTextList.get(position);
-        holder.text.setText(imageText.getText());
+        holder.text.setText(imageText.getFileName());
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
         // Glide.with(mContext).load(imageText.getImageId()).into(holder.image);
@@ -122,7 +123,7 @@ public class CardImageAdapterG extends RecyclerView.Adapter<CardImageAdapterG.Vi
         if(pl==1)
             pl=R.drawable.loading1;
         RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用掉Glide的缓存功能
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)//禁用掉Glide的缓存功能
                 //  .error(R.drawable.error)
                 // .skipMemoryCache(true)//禁用掉Glide的内存缓存功能
                 .placeholder(pl)

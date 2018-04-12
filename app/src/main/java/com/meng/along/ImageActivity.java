@@ -1,5 +1,5 @@
 package com.meng.along;
-
+/**暂时未用**/
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.meng.along.common.Common;
+import com.meng.along.common.MyApplication;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class ImageActivity extends AppCompatActivity implements  android.view.Ge
     private  int position=0;
     private TextView all,now;
     private List<ImageText> listPath=new ArrayList<>();
-    private List<ImageInfo> listInfo=new ArrayList<>();
     private String choice;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,14 +100,15 @@ public class ImageActivity extends AppCompatActivity implements  android.view.Ge
         }
         else{
             clickButton.setImageResource(R.drawable.nav_download);
-            listInfo=(List<ImageInfo>)bundle.getSerializable("list");
-            for (ImageInfo i:listInfo
-                    ) {
-                ImageText imageText=new ImageText();
-                imageText.setImageUrl(i.getUrl());
-                imageText.setText(i.getFilename());
-                listPath.add(imageText);
-            }
+//            listInfo=(List<ImageInfo>)bundle.getSerializable("list");
+//            for (ImageInfo i:listInfo
+//                    ) {
+//                ImageText imageText=new ImageText();
+//                imageText.setImageUrl(i.getUrl());
+//                imageText.setText(i.getFilename());
+//                listPath.add(imageText);
+//            }
+            listPath=(List<ImageText>)bundle.getSerializable("list");
             clickButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -138,7 +137,7 @@ public class ImageActivity extends AppCompatActivity implements  android.view.Ge
                         Toast.makeText(ImageActivity.this,"开始下载第"+(position+1)+"个...！",Toast.LENGTH_SHORT).show();
                     }
                 });
-                final int code=Common.downloadImage(listInfo.get(position));
+                final int code=Common.downloadImage(listPath.get(position));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

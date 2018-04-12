@@ -1,4 +1,4 @@
-package com.meng.along;
+package com.meng.along.common;
 
 import android.app.Application;
 import android.content.Context;
